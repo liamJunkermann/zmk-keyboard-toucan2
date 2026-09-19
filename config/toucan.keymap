@@ -40,7 +40,7 @@
         MOD_COMBO(ctrl_opt_l, 14 15 16, LC(LALT))    // S+D+F
         MOD_COMBO(opt_r,      19 20,    RALT)        // J+K
         MOD_COMBO(ctrl_r,     20 21,    RCTRL)       // K+L
-        MOD_COMBO(ctrl_opt_r, 19 20 21, RC(RALT))    // J+K+L
+        MOD_COMBO(ctrl_opt_r, 19 20 21, RA(RCTRL))   // J+K+L
     };
 
     keymap {
