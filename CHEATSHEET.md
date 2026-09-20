@@ -104,6 +104,10 @@ Holding SYM through the whole symbol run is usually faster than tapping in and o
 
 ## Appendix: layer maps
 
+A rendered diagram of every layer is generated automatically at
+[keymap-drawer/toucan.svg](keymap-drawer/toucan.svg). The maps below are the
+terminal-friendly version.
+
 `-` = falls through to the layer below · `~` = nothing · `[S]` = part of a combo.
 
 ### BASE

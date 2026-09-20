@@ -1,0 +1,37 @@
+parse_config:
+  # Long-form names for the layer-tap thumbs (the keymap's display-names are
+  # kept for the diagram headers).
+  layer_legend_map:
+    BASE: Base
+    NAV: Nav
+    SYM: Sym
+    ADJ: Adjust
+    MOU: Mouse
+
+  # Friendlier legends for bindings that would otherwise render as raw
+  # keycodes. Keys are the raw ZMK binding text.
+  raw_binding_map:
+    "&studio_unlock": "Studio\nUnlock"
+    "&bootloader": Boot
+    "&kp LC(LG(Q))": Lock
+    "&kp LC(LALT)": Ctrl+Opt
+    "&kp RA(BSPC)": Del Word
+    "&kp LA(LEFT)": Word ←
+    "&kp LA(RIGHT)": Word →
+    "&kp LG(Z)": Undo
+    "&kp LG(X)": Cut
+    "&kp LG(C)": Copy
+    "&kp LG(V)": Paste
+    "&mkp LCLK": Left Click
+    "&mkp RCLK": Right Click
+    "&mkp MCLK": Mid Click
+
+draw_config:
+  # Follows the reader's light/dark preference, which GitHub respects.
+  dark_mode: auto
+  draw_key_sides: true
+  # Combos overlap the home row badly when drawn in place, so give each one
+  # its own miniature diagram below the layers.
+  separate_combo_diagrams: true
+  combo_diagram_scale: 3
+  append_colon_to_layer_header: false

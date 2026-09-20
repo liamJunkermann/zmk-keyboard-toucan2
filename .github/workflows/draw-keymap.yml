@@ -1,0 +1,26 @@
+name: Draw keymap
+
+on:
+  push:
+    paths:
+      - "config/toucan.keymap"
+      - "config/toucan.json"
+      - "keymap_drawer.config.yaml"
+      - ".github/workflows/draw-keymap.yml"
+  workflow_dispatch:
+
+jobs:
+  draw:
+    uses: caksoylar/keymap-drawer/.github/workflows/draw-zmk.yml@main
+    permissions:
+      contents: write
+    with:
+      keymap_patterns: "config/toucan.keymap"
+      config_path: "keymap_drawer.config.yaml"
+      # config/toucan.json supplies the 42-key physical layout.
+      json_path: "config"
+      # The keymap parses fine without the west modules, so skip fetching them.
+      west_config_path: ""
+      output_folder: "keymap-drawer"
+      commit_message: "Redraw keymap diagram"
+      fail_on_error: true

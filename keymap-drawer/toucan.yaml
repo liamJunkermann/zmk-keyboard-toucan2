@@ -1,0 +1,238 @@
+layout: {zmk_keyboard: toucan}
+layers:
+  BASE:
+  - ESC
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - BSPC
+  - TAB
+  - A
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - ;
+  - ''''
+  - LSHFT
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - ','
+  - .
+  - /
+  - RSHFT
+  - LGUI
+  - {t: SPACE, h: Sym}
+  - ENTER
+  - SPACE
+  - {t: BSPC, h: Nav}
+  - LGUI
+  NAV:
+  - {t: ▽, type: trans}
+  - Lock
+  - PSCRN
+  - APP
+  - ''
+  - ''
+  - PG UP
+  - Word ←
+  - UP
+  - Word →
+  - Del Word
+  - BSPC
+  - {t: ▽, type: trans}
+  - LALT
+  - LCTRL
+  - LSHFT
+  - Ctrl+Opt
+  - CAPS
+  - PG DN
+  - LEFT
+  - DOWN
+  - RIGHT
+  - DEL
+  - ENTER
+  - {t: ▽, type: trans}
+  - Undo
+  - Cut
+  - Copy
+  - Paste
+  - ''
+  - ''
+  - HOME
+  - ''
+  - END
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  SYM:
+  - '`'
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '!'
+  - '@'
+  - '#'
+  - $
+  - '%'
+  - ^
+  - '&'
+  - '*'
+  - (
+  - )
+  - '|'
+  - {t: ▽, type: trans}
+  - '='
+  - '-'
+  - +
+  - '{'
+  - '}'
+  - '['
+  - ']'
+  - ;
+  - ':'
+  - \
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  ADJ:
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - F12
+  - BT CLR
+  - {t: BT, h: '0'}
+  - {t: BT, h: '1'}
+  - {t: BT, h: '2'}
+  - {t: BT, h: '3'}
+  - BRI INC
+  - ''
+  - VOL DN
+  - MUTE
+  - VOL UP
+  - ''
+  - ''
+  - {t: ▽, type: trans}
+  - 'Studio
+
+    Unlock'
+  - ''
+  - ''
+  - ''
+  - BRI DEC
+  - ''
+  - PREV
+  - PP
+  - NEXT
+  - ''
+  - Boot
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  MOU:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Mid Click
+  - Left Click
+  - Right Click
+  - Left Click
+  - Right Click
+  - Mid Click
+combos:
+- p: [14, 15]
+  k: {t: LCTRL, h: sticky}
+  l: [BASE]
+- p: [15, 16]
+  k: {t: LALT, h: sticky}
+  l: [BASE]
+- p: [14, 15, 16]
+  k: {t: Ctrl+Opt, h: sticky}
+  l: [BASE]
+- p: [19, 20]
+  k: {t: RALT, h: sticky}
+  l: [BASE]
+- p: [20, 21]
+  k: {t: RCTRL, h: sticky}
+  l: [BASE]
+- p: [19, 20, 21]
+  k: {t: AltGr+RCTRL, h: sticky}
+  l: [BASE]
