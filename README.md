@@ -15,6 +15,14 @@ Redrawn automatically by [keymap-drawer](https://github.com/caksoylar/keymap-dra
 
 ![Keymap](keymap-drawer/toucan.svg)
 
+## Printable copy
+
+[print/toucan-cheatsheet.pdf](print/toucan-cheatsheet.pdf) is a two-page A4 version — tasks on page 1, layer diagrams on page 2. Regenerate it after a keymap change with:
+
+```sh
+uv run scripts/make_print_sheet.py
+```
+
 # License
 
 The code in this repo is available under the MIT license.
