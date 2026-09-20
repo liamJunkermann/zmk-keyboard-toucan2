@@ -4,13 +4,16 @@ Task-first reference for [config/toucan.keymap](config/toucan.keymap). Per-layer
 
 ## What moved
 
-| Left thumb | Before | Now |
+| Thumb | Before | Now |
 | --- | --- | --- |
-| outer | Ctrl | **Cmd** |
-| middle | Opt | **Space** |
-| inner | NAV / Enter | NAV / Enter (unchanged) |
+| left outer | Ctrl | **Cmd** |
+| left middle | Opt | **SYM** (hold) / Space (tap) |
+| left inner | NAV (hold) / Enter (tap) | **Enter** |
+| right inner | Space | Space |
+| right middle | SYM (hold) / Bspc (tap) | **NAV** (hold) / Bspc (tap) |
+| right outer | Cmd | Cmd |
 
-Ctrl and Opt are now **home-row combos**. The right thumbs did not change: Space · SYM/Bspc · Cmd.
+Ctrl and Opt are now **home-row combos**, and the two layer thumbs swapped hands: SYM sits under the left thumb, NAV under the right.
 
 ## Modifier combos
 
@@ -34,7 +37,9 @@ They only fire on BASE, and need 150 ms of no typing beforehand, so words like "
 
 ## Everyday shortcuts
 
-**NAV** below means: hold the left inner thumb. Tapping it sends Enter.
+**NAV** below means: hold the right middle thumb. Tapping it instead sends Backspace.
+
+NAV now lives on the *right* thumb while most of its keys (arrows, word jumps) are on the right hand, so these are same-hand rolls. If that turns out to be awkward, swapping NAV back to a left thumb is a one-line keymap change.
 
 | Task | Keys | Sends |
 | --- | --- | --- |
@@ -76,7 +81,7 @@ The characters moved, so here is where each class now lives:
 
 - **Letters** — unchanged, BASE home row.
 - **Capitals** — hold either pinky Shift (`SHIFT` outer column, both hands).
-- **Digits** — **SYM** (hold right inner thumb) + the top row: `Q`…`P` = `1`…`0`.
+- **Digits** — **SYM** (hold left middle thumb; tapping it sends Space) + the top row: `Q`…`P` = `1`…`0`.
 - **`! @ # $ %`** — SYM + left home row `A S D F G`.
 - **`^ & * ( )`** — SYM + right home row `H J K L ;`.
 - **`= - + { }`** — SYM + left bottom row `Z X C V B`.
@@ -90,8 +95,8 @@ Holding SYM through the whole symbol run is usually faster than tapping in and o
 
 | Layer | How |
 | --- | --- |
-| NAV | hold left inner thumb (tap = Enter) |
-| SYM | hold right middle thumb (tap = Backspace) |
+| NAV | hold right middle thumb (tap = Backspace) |
+| SYM | hold left middle thumb (tap = Space) |
 | ADJ | hold both NAV and SYM together |
 | MOUSE | rest a finger on the trackpad (held while touching) |
 
@@ -107,10 +112,10 @@ Holding SYM through the whole symbol run is usually faster than tapping in and o
  ESC    Q     W     E     R     T   │  Y     U     I     O     P    BSPC
  TAB    A    [S]   [D]   [F]    G   │  H    [J]   [K]   [L]    ;     '
 SHIFT   Z     X     C     V     B   │  N     M     ,     .     /   SHIFT
-                   CMD  SPACE  NAV  │SPACE  SYM   CMD
+                   CMD   SYM  ENTER │SPACE  NAV   CMD
 ```
 
-### NAV — hold left inner thumb
+### NAV — hold right middle thumb
 
 ```
   -    LOCK PRTSC  MENU   ~     ~   │ PGUP WORD←   ↑   WORD→ DELWD  BSPC
@@ -121,7 +126,7 @@ SHIFT   Z     X     C     V     B   │  N     M     ,     .     /   SHIFT
 
 Undo/cut/copy/paste are the Cmd versions. `C+ALT` is a held Ctrl+Opt.
 
-### SYM — hold right middle thumb
+### SYM — hold left middle thumb
 
 ```
   `     1     2     3     4     5   │  6     7     8     9     0     -
