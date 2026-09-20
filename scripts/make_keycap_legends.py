@@ -5,8 +5,9 @@
 # ///
 """Draw 1:1 keycap legends for the blank MBK caps, from config/toucan.keymap.
 
-Only the keys you need to re-orient with are legended: the six thumbs, the six
-home-row combo keys, and the SYM digits. The alphas stay blank.
+Every key gets its base legend, plus the two extras worth carrying: the SYM
+number row in the top-left corner, and the home-row modifier combos drawn on
+the edge facing the key you press them with.
 
 Page 1 is filled artwork for waterslide/sticker decals; page 2 is the same
 geometry outlined, for tracing or cutting a paint stencil.
@@ -21,6 +22,7 @@ import sys
 import tempfile
 from dataclasses import dataclass, field
 from datetime import date
+from html import escape
 from pathlib import Path
 
 import yaml
@@ -37,26 +39,38 @@ PDF_OUT = OUT_DIR / "keycap-legends.pdf"
 CAP_W_MM, CAP_H_MM = 18.0, 17.0
 FACE_W_MM, FACE_H_MM = 14.5, 13.5
 
-# Key positions, row-major, as the keymap lays them out.
-TOP_L, TOP_R = range(1, 6), range(6, 11)  # Q W E R T / Y U I O P
+# Key positions, row-major, as the keymap lays them out: six per half per row,
+# then three thumbs per half.
+ROWS_L = [range(0, 6), range(12, 18), range(24, 30)]
+ROWS_R = [range(6, 12), range(18, 24), range(30, 36)]
 THUMBS_L, THUMBS_R = (36, 37, 38), (39, 40, 41)
 
-# Which grid column each legended position sits in, per half. Preserved from
-# the real layout so the combo edge glyphs point at the right neighbour.
+# Rows that also carry their SYM legend in the corner. Only the number row by
+# default — add 1 and 2 here to print the symbol rows as well.
+SYM_LEGEND_ROWS = (0,)
+
+# Which grid column each position sits in, per half. Kept faithful to the real
+# layout so the combo edge glyphs point at the right neighbour.
 COLUMNS = {
-    **{p: i + 1 for i, p in enumerate(TOP_L)},  # Q..T -> cols 1-5
-    14: 2, 15: 3, 16: 4,  # S D F
-    36: 3, 37: 4, 38: 5,  # left thumbs sit under the inner columns
-    **{p: i for i, p in enumerate(TOP_R)},  # Y..P -> cols 0-4
-    19: 1, 20: 2, 21: 3,  # J K L
-    39: 0, 40: 1, 41: 2,
+    **{p: i for row in (*ROWS_L, *ROWS_R) for i, p in enumerate(row)},
+    **{p: i + 3 for i, p in enumerate(THUMBS_L)},  # left thumbs sit inboard
+    **{p: i for i, p in enumerate(THUMBS_R)},
 }
 
 MOD_GLYPHS = {"LCTRL": "⌃", "RCTRL": "⌃", "LALT": "⌥", "RALT": "⌥"}
 
-# Tap legends for the thumbs. "space" and "bar" are drawn with borders rather
-# than characters so they can't fall back to a missing glyph.
-TAP_GLYPHS = {"LGUI": "⌘", "ENTER": "↩", "BSPC": "⌫", "SPACE": "space"}
+# Legends for keys that aren't their own glyph. "space" is drawn with borders
+# rather than a character so it can't fall back to a missing glyph.
+GLYPHS = {
+    "ESC": "esc",
+    "TAB": "⇥",
+    "BSPC": "⌫",
+    "ENTER": "↩",
+    "LSHFT": "⇧",
+    "RSHFT": "⇧",
+    "LGUI": "⌘",
+    "SPACE": "space",
+}
 
 
 @dataclass
@@ -68,7 +82,6 @@ class Cap:
     corner: str = ""  # SYM legend, top-left
     edges: dict[str, str] = field(default_factory=dict)  # "left"/"right" -> glyph
     bar: bool = False  # part of a three-key Ctrl+Opt combo
-    homing: bool = False
 
 
 def parse_keymap() -> dict:
@@ -100,22 +113,28 @@ def build_caps(parsed: dict) -> dict[int, Cap]:
 
     caps = {p: Cap(pos=p, label=text(base[p])) for p in COLUMNS}
 
-    # SYM digits in the top-left corner of the top row.
-    digits = [text(sym[p]) for p in (*TOP_L, *TOP_R)]
-    if digits != list("1234567890"):
-        die(f"SYM top row is {digits}, expected 1-0")
-    for p, digit in zip((*TOP_L, *TOP_R), digits):
-        caps[p].corner = digit
+    # Every key carries its BASE legend.
+    for p, cap in caps.items():
+        cap.main = GLYPHS.get(cap.label, cap.label)
 
-    # Thumbs: tap glyph in the middle, hold layer along the bottom.
+    # Thumbs additionally say which layer they hold.
     for p in (*THUMBS_L, *THUMBS_R):
         binding = base[p]
-        tap = text(binding)
-        if tap not in TAP_GLYPHS:
-            die(f"thumb {p} taps {tap!r}, which has no legend")
-        caps[p].main = TAP_GLYPHS[tap]
+        if text(binding) not in GLYPHS:
+            die(f"thumb {p} taps {text(binding)!r}, which has no legend")
         if isinstance(binding, dict) and binding.get("h"):
             caps[p].band = binding["h"].upper()
+
+    # The SYM legend goes in the top-left corner. Skip keys that fall through.
+    digits = [text(sym[p]) for p in (*ROWS_L[0], *ROWS_R[0])][1:11]
+    if digits != list("1234567890"):
+        die(f"SYM number row is {digits}, expected 1-0")
+    for row in SYM_LEGEND_ROWS:
+        for p in (*ROWS_L[row], *ROWS_R[row]):
+            binding = sym[p]
+            if isinstance(binding, dict) and binding.get("type") == "trans":
+                continue
+            caps[p].corner = text(binding)
 
     # Combos: a modifier glyph on the edge facing the partner key, and a bar
     # along the bottom of every key in a three-key combo.
@@ -136,9 +155,6 @@ def build_caps(parsed: dict) -> dict[int, Cap]:
         else:
             for p in positions:
                 caps[p].bar = True
-
-    for p in (16, 19):  # F and J
-        caps[p].homing = True
 
     return caps
 
@@ -205,9 +221,12 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18pt;
+  font-size: 15pt;
   line-height: 1;
 }
+
+.main.small { font-size: 8pt; letter-spacing: 0.2pt; }
+.main.tight { font-size: 12pt; }
 
 .spacebar {
   width: 7mm;
@@ -233,7 +252,7 @@ h2 {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 11pt;
+  font-size: 9pt;
   line-height: 1;
 }
 .edge.left { left: 0.8mm; }
@@ -249,24 +268,13 @@ h2 {
   background: #000;
 }
 
-.homing {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 1.4mm;
-  height: 1.4mm;
-  border-radius: 50%;
-  background: #000;
-}
-
 /* Page 2: the same geometry, outlined for tracing or cutting. */
 .stencil { break-before: page; }
 .stencil .main, .stencil .corner, .stencil .edge, .stencil .band {
   color: transparent;
   -webkit-text-stroke: 0.22mm #000;
 }
-.stencil .bar, .stencil .homing { background: transparent; border: 0.18mm solid #000; }
+.stencil .bar { background: transparent; border: 0.18mm solid #000; }
 .stencil .spacebar { border-width: 0.18mm; }
 
 .key-list { columns: 2; column-gap: 8mm; font-size: 7pt; margin: 1mm 0 0; }
@@ -287,19 +295,24 @@ h2 {
 def render_cap(cap: Cap) -> str:
     bits = []
     if cap.corner:
-        bits.append(f'<span class="corner">{cap.corner}</span>')
+        bits.append(f'<span class="corner">{escape(cap.corner)}</span>')
     for side, glyph in cap.edges.items():
         bits.append(f'<span class="edge {side}">{glyph}</span>')
     if cap.main == "space":
         bits.append('<span class="main"><span class="spacebar"></span></span>')
     elif cap.main:
-        bits.append(f'<span class="main">{cap.main}</span>')
+        # Word legends like "esc" need to come down a size to fit the face.
+        if len(cap.main) > 1:
+            size = " small"
+        elif cap.edges:  # make room for the modifier glyphs either side
+            size = " tight"
+        else:
+            size = ""
+        bits.append(f'<span class="main{size}">{escape(cap.main)}</span>')
     if cap.band:
         bits.append(f'<span class="band">{cap.band}</span>')
     if cap.bar:
         bits.append('<span class="bar"></span>')
-    if cap.homing:
-        bits.append('<span class="homing"></span>')
     face = "".join(bits)
     return (
         f'<div class="cap"><div class="face">{face}</div>'
@@ -319,8 +332,8 @@ def render_row(caps: dict[int, Cap], positions, columns: int = 6) -> str:
 
 def render_body(caps: dict[int, Cap]) -> str:
     halves = [
-        ("Left half", [TOP_L, (14, 15, 16), THUMBS_L]),
-        ("Right half", [TOP_R, (19, 20, 21), THUMBS_R]),
+        ("Left half", [*ROWS_L, THUMBS_L]),
+        ("Right half", [*ROWS_R, THUMBS_R]),
     ]
     out = []
     for title, rows in halves:
@@ -345,8 +358,11 @@ def render_key(caps: dict[int, Cap]) -> str:
     ctrl = caps[14].edges["right"]
     opt = caps[15].edges["right"]
     entries = [
-        ("⌘ ↩ ⌫", "Cmd, Enter, Backspace — what the thumb sends on a <b>tap</b>."),
-        ("⌴", "Space. The two wide thumbs both send it."),
+        ("A ⇧ ⇥ ⌫", "The base layer — what the key sends on its own."),
+        (
+            "1 … 0",
+            "Top-left corner: hold <b>SYM</b> (left middle thumb) and press the key.",
+        ),
         (
             "SYM / NAV",
             "<b>Hold</b> that thumb for the layer; tap it for the glyph above the word.",
@@ -361,8 +377,6 @@ def render_key(caps: dict[int, Cap]) -> str:
             "The bar runs under S·D·F and J·K·L: press all three together for "
             f"{ctrl}{opt}.",
         ),
-        ("1 … 0", "Hold SYM (left middle thumb) and press this key."),
-        ("●", "Home key for the index finger."),
     ]
     rows = "".join(f"<p><b>{mark}</b> — {text}</p>" for mark, text in entries)
     return f'<div class="key-list">{rows}</div>'

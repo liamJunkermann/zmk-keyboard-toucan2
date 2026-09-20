@@ -25,7 +25,9 @@ uv run scripts/make_print_sheet.py
 
 ## Keycap legends
 
-[print/keycap-legends.pdf](print/keycap-legends.pdf) is 1:1 artwork for the blank MBK caps — page 1 filled for waterslide or sticker decals, page 2 outlined for tracing or a paint stencil. Only the keys worth legending are drawn: the six thumbs, the six home-row combo keys, and the SYM digits. Print at 100% and check the 50 mm bar before cutting.
+[print/keycap-legends.pdf](print/keycap-legends.pdf) is 1:1 artwork for the blank MBK caps — page 1 filled for waterslide or sticker decals, page 2 outlined for tracing or a paint stencil. All 42 keys are drawn, each with its base legend plus the two extras worth carrying: the SYM number row in the top-left corner, and the home-row Ctrl/Opt combos marked on the edge facing the key you press them with. Print at 100% and check the 50 mm bar before cutting.
+
+To legend the SYM symbol rows as well, add their row indices to `SYM_LEGEND_ROWS` in the script.
 
 ```sh
 uv run scripts/make_keycap_legends.py
