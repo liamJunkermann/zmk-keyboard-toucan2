@@ -23,6 +23,14 @@ Redrawn automatically by [keymap-drawer](https://github.com/caksoylar/keymap-dra
 uv run scripts/make_print_sheet.py
 ```
 
+## Keycap legends
+
+[print/keycap-legends.pdf](print/keycap-legends.pdf) is 1:1 artwork for the blank MBK caps — page 1 filled for waterslide or sticker decals, page 2 outlined for tracing or a paint stencil. Only the keys worth legending are drawn: the six thumbs, the six home-row combo keys, and the SYM digits. Print at 100% and check the 50 mm bar before cutting.
+
+```sh
+uv run scripts/make_keycap_legends.py
+```
+
 # License
 
 The code in this repo is available under the MIT license.

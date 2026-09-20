@@ -15,6 +15,8 @@ Task-first reference for [config/toucan.keymap](config/toucan.keymap). Per-layer
 
 Ctrl and Opt are now **home-row combos**, and the two layer thumbs swapped hands: SYM sits under the left thumb, NAV under the right.
 
+On caps legended from [print/keycap-legends.pdf](print/keycap-legends.pdf), each layer thumb shows the glyph it sends when **tapped**, with the layer it **holds** printed underneath.
+
 ## Modifier combos
 
 Press the two (or three) keys together, on the BASE layer.
@@ -34,6 +36,8 @@ They are sticky keys, so one binding covers both habits:
 - **Keep holding** → behaves like a normal held modifier for as long as you hold it.
 
 They only fire on BASE, and need 150 ms of no typing beforehand, so words like "sad" and "desk" type normally.
+
+On the legended caps a combo is drawn as `⌃` or `⌥` on the **edge facing the key you press it with**, and the bar running under `S`·`D`·`F` (and `J`·`K`·`L`) is the three-key Ctrl+Opt.
 
 ## Everyday shortcuts
 

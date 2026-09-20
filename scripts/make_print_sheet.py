@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import re
 import shutil
-import subprocess
 import sys
 import tempfile
 from datetime import date
@@ -23,8 +22,7 @@ from pathlib import Path
 
 import yaml
 from markdown_it import MarkdownIt
-
-ROOT = Path(__file__).resolve().parent.parent
+from printing import ROOT, git_sha, run, to_pdf
 CHEATSHEET = ROOT / "CHEATSHEET.md"
 KEYMAP = ROOT / "config" / "toucan.keymap"
 LAYOUT_JSON = ROOT / "config" / "toucan.json"
@@ -44,8 +42,6 @@ SECTIONS = [
     "Typing your password",
     "Layer access",
 ]
-
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 CSS = """
 @page { size: A4 portrait; margin: 11mm 12mm; }
@@ -157,17 +153,6 @@ HTML = """<!DOCTYPE html>
 """
 
 
-def run(cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=True, capture_output=True, text=True, **kwargs)
-
-
-def git_sha() -> str:
-    try:
-        return run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"]).stdout.strip()
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return "unknown"
-
-
 def split_sections(markdown: str) -> dict[str, str]:
     """Split the cheatsheet into {heading: body markdown}."""
     parts = re.split(r"^## (.+)$", markdown, flags=re.MULTILINE)
@@ -212,31 +197,6 @@ def draw_layers() -> None:
         SVG_OUT.write_text(svg)
 
 
-def to_pdf() -> bool:
-    if not Path(CHROME).exists():
-        return False
-    with tempfile.TemporaryDirectory() as tmp:
-        cmd = [
-            CHROME,
-            "--headless",
-            f"--user-data-dir={tmp}",
-            "--no-pdf-header-footer",
-            "--no-first-run",
-            "--disable-gpu",
-            "--disable-extensions",
-            f"--print-to-pdf={PDF_OUT}",
-            HTML_OUT.as_uri(),
-        ]
-        try:
-            # Chrome writes the PDF and then sometimes lingers, so cap the wait
-            # and treat a fresh file on disk as success.
-            run(cmd, timeout=90)
-        except subprocess.TimeoutExpired:
-            if not PDF_OUT.exists():
-                raise
-    return True
-
-
 def main() -> None:
     if not shutil.which("uvx"):
         sys.exit("error: uvx is required to run keymap-drawer")
@@ -261,7 +221,7 @@ def main() -> None:
     print(f"wrote {HTML_OUT.relative_to(ROOT)}")
     print(f"wrote {SVG_OUT.relative_to(ROOT)}")
 
-    if to_pdf():
+    if to_pdf(HTML_OUT, PDF_OUT):
         print(f"wrote {PDF_OUT.relative_to(ROOT)}")
     else:
         print("Chrome not found — open the HTML and use Cmd+P to save a PDF")

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Toucan keycap legends</title>
+<style>
+@page { size: A4 portrait; margin: 11mm 12mm; }
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: "SF Pro Text", "Helvetica Neue", "Lucida Grande", "Apple Symbols", sans-serif;
+  font-size: 8pt;
+  color: #000;
+  background: #fff;
+  margin: 0;
+}
+
+h1 { font-size: 13pt; margin: 0 0 0.8mm; letter-spacing: -0.2pt; }
+
+.subtitle {
+  font-size: 7pt;
+  color: #555;
+  margin: 0 0 3mm;
+  padding-bottom: 1.6mm;
+  border-bottom: 0.6pt solid #000;
+}
+
+h2 {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.4pt;
+  color: #555;
+  margin: 2.5mm 0 1mm;
+}
+
+.row { display: flex; }
+
+/* The tile is the cap footprint; the face inside it is the printable top. */
+.cap { width: 18.0mm; height: 17.0mm; position: relative; }
+
+.face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14.5mm;
+  height: 13.5mm;
+  border: 0.2pt dashed #bbb;   /* cut line */
+  border-radius: 0.8mm;
+  overflow: hidden;
+}
+
+.pos {
+  position: absolute;
+  left: 0.6mm;
+  bottom: 0;
+  font-size: 4pt;
+  color: #bbb;
+}
+
+.main {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18pt;
+  line-height: 1;
+}
+
+.spacebar {
+  width: 7mm;
+  height: 3mm;
+  border: 0.5mm solid #000;
+  border-top: none;
+}
+
+.band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.5mm;
+  text-align: center;
+  font-size: 5.5pt;
+  font-weight: 600;
+  letter-spacing: 0.4pt;
+}
+
+.corner { position: absolute; left: 1mm; top: 0.6mm; font-size: 8pt; }
+
+.edge {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11pt;
+  line-height: 1;
+}
+.edge.left { left: 0.8mm; }
+.edge.right { right: 0.8mm; }
+
+.bar {
+  position: absolute;
+  left: 1mm;
+  right: 1mm;
+  bottom: 1.4mm;
+  height: 0.6mm;
+  border-radius: 0.3mm;
+  background: #000;
+}
+
+.homing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.4mm;
+  height: 1.4mm;
+  border-radius: 50%;
+  background: #000;
+}
+
+/* Page 2: the same geometry, outlined for tracing or cutting. */
+.stencil { break-before: page; }
+.stencil .main, .stencil .corner, .stencil .edge, .stencil .band {
+  color: transparent;
+  -webkit-text-stroke: 0.22mm #000;
+}
+.stencil .bar, .stencil .homing { background: transparent; border: 0.18mm solid #000; }
+.stencil .spacebar { border-width: 0.18mm; }
+
+.key-list { columns: 2; column-gap: 8mm; font-size: 7pt; margin: 1mm 0 0; }
+.key-list p { margin: 0 0 1.4mm; break-inside: avoid; }
+.key-list b { font-weight: 600; }
+
+.calibration { margin-top: 4mm; font-size: 6.5pt; color: #555; }
+.calibration .ruler {
+  width: 50mm;
+  height: 2.2mm;
+  border: 0.3mm solid #000;
+  border-top: none;
+  margin-bottom: 0.8mm;
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<h1>Toucan keycap legends — decals</h1>
+<p class="subtitle">Generated from config/toucan.keymap at 8b18f18 on 2026-09-20 · print at 100%, no scaling · cut on the dashed line</p>
+<h2>Left half</h2>
+<div class="row"><div class="cap"></div><div class="cap"><div class="face"><span class="corner">1</span></div><span class="pos">Q</span></div><div class="cap"><div class="face"><span class="corner">2</span></div><span class="pos">W</span></div><div class="cap"><div class="face"><span class="corner">3</span></div><span class="pos">E</span></div><div class="cap"><div class="face"><span class="corner">4</span></div><span class="pos">R</span></div><div class="cap"><div class="face"><span class="corner">5</span></div><span class="pos">T</span></div></div>
+<div class="row"><div class="cap"></div><div class="cap"></div><div class="cap"><div class="face"><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">S</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="edge right">⌥</span><span class="bar"></span></div><span class="pos">D</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">F</span></div><div class="cap"></div></div>
+<div class="row"><div class="cap"></div><div class="cap"></div><div class="cap"></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span><span class="band">SYM</span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">↩</span></div><span class="pos">ENTER</span></div></div>
+<h2>Right half</h2>
+<div class="row"><div class="cap"><div class="face"><span class="corner">6</span></div><span class="pos">Y</span></div><div class="cap"><div class="face"><span class="corner">7</span></div><span class="pos">U</span></div><div class="cap"><div class="face"><span class="corner">8</span></div><span class="pos">I</span></div><div class="cap"><div class="face"><span class="corner">9</span></div><span class="pos">O</span></div><div class="cap"><div class="face"><span class="corner">0</span></div><span class="pos">P</span></div><div class="cap"></div></div>
+<div class="row"><div class="cap"></div><div class="cap"><div class="face"><span class="edge right">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">J</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">K</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="bar"></span></div><span class="pos">L</span></div><div class="cap"></div><div class="cap"></div></div>
+<div class="row"><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">⌫</span><span class="band">NAV</span></div><span class="pos">BSPC</span></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"></div><div class="cap"></div><div class="cap"></div></div>
+<h2>Spares</h2>
+<div class="row"><div class="cap"><div class="face"><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">S</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="edge right">⌥</span><span class="bar"></span></div><span class="pos">D</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">F</span></div><div class="cap"><div class="face"><span class="edge right">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">J</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">K</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="bar"></span></div><span class="pos">L</span></div></div>
+<div class="row"><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span><span class="band">SYM</span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">↩</span></div><span class="pos">ENTER</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">⌫</span><span class="band">NAV</span></div><span class="pos">BSPC</span></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div></div>
+<h2>What the marks mean</h2>
+<div class="key-list"><p><b>⌘ ↩ ⌫</b> — Cmd, Enter, Backspace — what the thumb sends on a <b>tap</b>.</p><p><b>⌴</b> — Space. The two wide thumbs both send it.</p><p><b>SYM / NAV</b> — <b>Hold</b> that thumb for the layer; tap it for the glyph above the word.</p><p><b>⌃ ⌥</b> — Ctrl and Opt, printed on the edge facing the key you press it with — ⌃ between S·D and K·L, ⌥ between D·F and J·K.</p><p><b>▬</b> — The bar runs under S·D·F and J·K·L: press all three together for ⌃⌥.</p><p><b>1 … 0</b> — Hold SYM (left middle thumb) and press this key.</p><p><b>●</b> — Home key for the index finger.</p></div>
+<div class="calibration"><div class="ruler"></div>50 mm — if this bar measures anything else, the printer scaled the page and the decals will not fit.</div>
+</div>
+<div class="sheet stencil">
+<h1>Toucan keycap legends — stencil</h1>
+<p class="subtitle">Outlines of the same artwork, for tracing onto the caps or cutting a mask.</p>
+<h2>Left half</h2>
+<div class="row"><div class="cap"></div><div class="cap"><div class="face"><span class="corner">1</span></div><span class="pos">Q</span></div><div class="cap"><div class="face"><span class="corner">2</span></div><span class="pos">W</span></div><div class="cap"><div class="face"><span class="corner">3</span></div><span class="pos">E</span></div><div class="cap"><div class="face"><span class="corner">4</span></div><span class="pos">R</span></div><div class="cap"><div class="face"><span class="corner">5</span></div><span class="pos">T</span></div></div>
+<div class="row"><div class="cap"></div><div class="cap"></div><div class="cap"><div class="face"><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">S</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="edge right">⌥</span><span class="bar"></span></div><span class="pos">D</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">F</span></div><div class="cap"></div></div>
+<div class="row"><div class="cap"></div><div class="cap"></div><div class="cap"></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span><span class="band">SYM</span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">↩</span></div><span class="pos">ENTER</span></div></div>
+<h2>Right half</h2>
+<div class="row"><div class="cap"><div class="face"><span class="corner">6</span></div><span class="pos">Y</span></div><div class="cap"><div class="face"><span class="corner">7</span></div><span class="pos">U</span></div><div class="cap"><div class="face"><span class="corner">8</span></div><span class="pos">I</span></div><div class="cap"><div class="face"><span class="corner">9</span></div><span class="pos">O</span></div><div class="cap"><div class="face"><span class="corner">0</span></div><span class="pos">P</span></div><div class="cap"></div></div>
+<div class="row"><div class="cap"></div><div class="cap"><div class="face"><span class="edge right">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">J</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">K</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="bar"></span></div><span class="pos">L</span></div><div class="cap"></div><div class="cap"></div></div>
+<div class="row"><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">⌫</span><span class="band">NAV</span></div><span class="pos">BSPC</span></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"></div><div class="cap"></div><div class="cap"></div></div>
+<h2>Spares</h2>
+<div class="row"><div class="cap"><div class="face"><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">S</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="edge right">⌥</span><span class="bar"></span></div><span class="pos">D</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">F</span></div><div class="cap"><div class="face"><span class="edge right">⌥</span><span class="bar"></span><span class="homing"></span></div><span class="pos">J</span></div><div class="cap"><div class="face"><span class="edge left">⌥</span><span class="edge right">⌃</span><span class="bar"></span></div><span class="pos">K</span></div><div class="cap"><div class="face"><span class="edge left">⌃</span><span class="bar"></span></div><span class="pos">L</span></div></div>
+<div class="row"><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span><span class="band">SYM</span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">↩</span></div><span class="pos">ENTER</span></div><div class="cap"><div class="face"><span class="main"><span class="spacebar"></span></span></div><span class="pos">SPACE</span></div><div class="cap"><div class="face"><span class="main">⌫</span><span class="band">NAV</span></div><span class="pos">BSPC</span></div><div class="cap"><div class="face"><span class="main">⌘</span></div><span class="pos">LGUI</span></div></div>
+<h2>What the marks mean</h2>
+<div class="key-list"><p><b>⌘ ↩ ⌫</b> — Cmd, Enter, Backspace — what the thumb sends on a <b>tap</b>.</p><p><b>⌴</b> — Space. The two wide thumbs both send it.</p><p><b>SYM / NAV</b> — <b>Hold</b> that thumb for the layer; tap it for the glyph above the word.</p><p><b>⌃ ⌥</b> — Ctrl and Opt, printed on the edge facing the key you press it with — ⌃ between S·D and K·L, ⌥ between D·F and J·K.</p><p><b>▬</b> — The bar runs under S·D·F and J·K·L: press all three together for ⌃⌥.</p><p><b>1 … 0</b> — Hold SYM (left middle thumb) and press this key.</p><p><b>●</b> — Home key for the index finger.</p></div>
+<div class="calibration"><div class="ruler"></div>50 mm — check this before cutting.</div>
+</div>
+</body>
+</html>
