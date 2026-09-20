@@ -31,8 +31,12 @@ from printing import ROOT, git_sha, run, to_pdf
 KEYMAP = ROOT / "config" / "toucan.keymap"
 DRAWER_CONFIG = ROOT / "keymap_drawer.config.yaml"
 OUT_DIR = ROOT / "print"
-HTML_OUT = OUT_DIR / "keycap-legends.html"
-PDF_OUT = OUT_DIR / "keycap-legends.pdf"
+# Two sheets: the plain one carries only the number row, the full one adds the
+# SYM symbol rows as well. Both are generated together so they can't drift.
+VARIANTS = [
+    ("keycap-legends", (0,), "number row"),
+    ("keycap-legends-symbols", (0, 1, 2), "number and symbol rows"),
+]
 
 # MBK / Choc low-profile. The footprint is what the caps occupy on the board;
 # the face is the flat top you can actually put artwork on.
@@ -44,10 +48,6 @@ FACE_W_MM, FACE_H_MM = 14.5, 13.5
 ROWS_L = [range(0, 6), range(12, 18), range(24, 30)]
 ROWS_R = [range(6, 12), range(18, 24), range(30, 36)]
 THUMBS_L, THUMBS_R = (36, 37, 38), (39, 40, 41)
-
-# Rows that also carry their SYM legend in the corner. Only the number row by
-# default — add 1 and 2 here to print the symbol rows as well.
-SYM_LEGEND_ROWS = (0,)
 
 # Which grid column each position sits in, per half. Kept faithful to the real
 # layout so the combo edge glyphs point at the right neighbour.
@@ -101,7 +101,7 @@ def die(msg: str) -> None:
     sys.exit(f"error: {msg}\n       The legend scheme no longer matches the keymap.")
 
 
-def build_caps(parsed: dict) -> dict[int, Cap]:
+def build_caps(parsed: dict, sym_rows: tuple[int, ...]) -> dict[int, Cap]:
     layers = parsed.get("layers", {})
     for name in ("BASE", "SYM"):
         if name not in layers:
@@ -129,7 +129,7 @@ def build_caps(parsed: dict) -> dict[int, Cap]:
     digits = [text(sym[p]) for p in (*ROWS_L[0], *ROWS_R[0])][1:11]
     if digits != list("1234567890"):
         die(f"SYM number row is {digits}, expected 1-0")
-    for row in SYM_LEGEND_ROWS:
+    for row in sym_rows:
         for p in (*ROWS_L[row], *ROWS_R[row]):
             binding = sym[p]
             if isinstance(binding, dict) and binding.get("type") == "trans":
@@ -360,8 +360,8 @@ def render_key(caps: dict[int, Cap]) -> str:
     entries = [
         ("A ⇧ ⇥ ⌫", "The base layer — what the key sends on its own."),
         (
-            "1 … 0",
-            "Top-left corner: hold <b>SYM</b> (left middle thumb) and press the key.",
+            "Top-left",
+            "The SYM legend — hold <b>SYM</b> (left middle thumb) and press the key.",
         ),
         (
             "SYM / NAV",
@@ -392,7 +392,7 @@ HTML = """<!DOCTYPE html>
 <body>
 <div class="sheet">
 <h1>Toucan keycap legends — decals</h1>
-<p class="subtitle">{subtitle} · print at 100%, no scaling · cut on the dashed line</p>
+<p class="subtitle">{subtitle} · {extras} · print at 100%, no scaling · cut on the dashed line</p>
 {body}
 <div class="calibration"><div class="ruler"></div>50 mm — if this bar measures anything else, the printer scaled the page and the decals will not fit.</div>
 </div>
@@ -411,8 +411,7 @@ def main() -> None:
     if not shutil.which("uvx"):
         sys.exit("error: uvx is required to parse the keymap")
 
-    caps = build_caps(parse_keymap())
-
+    parsed = parse_keymap()
     css = (
         CSS.replace("CAP_W", str(CAP_W_MM))
         .replace("CAP_H", str(CAP_H_MM))
@@ -424,13 +423,17 @@ def main() -> None:
     )
 
     OUT_DIR.mkdir(exist_ok=True)
-    HTML_OUT.write_text(HTML.format(css=css, subtitle=subtitle, body=render_body(caps)))
-    print(f"wrote {HTML_OUT.relative_to(ROOT)}")
-
-    if to_pdf(HTML_OUT, PDF_OUT):
-        print(f"wrote {PDF_OUT.relative_to(ROOT)}")
-    else:
-        print("Chrome not found — open the HTML and use Cmd+P to save a PDF")
+    for stem, sym_rows, extras in VARIANTS:
+        html, pdf = OUT_DIR / f"{stem}.html", OUT_DIR / f"{stem}.pdf"
+        body = render_body(build_caps(parsed, sym_rows))
+        html.write_text(
+            HTML.format(css=css, subtitle=subtitle, extras=f"SYM {extras}", body=body)
+        )
+        print(f"wrote {html.relative_to(ROOT)}")
+        if to_pdf(html, pdf):
+            print(f"wrote {pdf.relative_to(ROOT)}")
+        else:
+            print("Chrome not found — open the HTML and use Cmd+P to save a PDF")
 
 
 if __name__ == "__main__":

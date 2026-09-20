@@ -6,8 +6,11 @@ under `uv run --script` so this sits next to them on sys.path.
 
 from __future__ import annotations
 
+import os
+import signal
 import subprocess
 import tempfile
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,10 +29,18 @@ def git_sha() -> str:
         return "unknown"
 
 
-def to_pdf(html: Path, pdf: Path) -> bool:
-    """Print an HTML file to PDF with headless Chrome. False if Chrome is absent."""
+def to_pdf(html: Path, pdf: Path, timeout: float = 90) -> bool:
+    """Print an HTML file to PDF with headless Chrome. False if Chrome is absent.
+
+    Chrome frequently writes the PDF and then never exits (both --headless and
+    --headless=new do it), so rather than wait on the process we wait for the
+    file to appear and stop growing, then kill it. It is started in its own
+    session so the kill takes the renderer helpers with it -- terminating just
+    the parent leaves them running.
+    """
     if not Path(CHROME).exists():
         return False
+    pdf.unlink(missing_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         cmd = [
             CHROME,
@@ -42,11 +53,28 @@ def to_pdf(html: Path, pdf: Path) -> bool:
             f"--print-to-pdf={pdf}",
             html.as_uri(),
         ]
+        proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
         try:
-            # Chrome writes the PDF and then sometimes lingers, so cap the wait
-            # and treat a fresh file on disk as success.
-            run(cmd, timeout=90)
-        except subprocess.TimeoutExpired:
-            if not pdf.exists():
-                raise
+            deadline = time.monotonic() + timeout
+            written = -1
+            while time.monotonic() < deadline:
+                if proc.poll() is not None:
+                    break
+                size = pdf.stat().st_size if pdf.exists() else 0
+                if size and size == written:
+                    break  # file has stopped growing
+                written = size
+                time.sleep(0.4)
+        finally:
+            if proc.poll() is None:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+                proc.wait(timeout=10)
+
+    if not pdf.exists():
+        raise RuntimeError(f"Chrome did not write {pdf}")
     return True

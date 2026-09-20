@@ -25,9 +25,12 @@ uv run scripts/make_print_sheet.py
 
 ## Keycap legends
 
-[print/keycap-legends.pdf](print/keycap-legends.pdf) is 1:1 artwork for the blank MBK caps — page 1 filled for waterslide or sticker decals, page 2 outlined for tracing or a paint stencil. All 42 keys are drawn, each with its base legend plus the two extras worth carrying: the SYM number row in the top-left corner, and the home-row Ctrl/Opt combos marked on the edge facing the key you press them with. Print at 100% and check the 50 mm bar before cutting.
+1:1 artwork for the blank MBK caps, in two versions:
 
-To legend the SYM symbol rows as well, add their row indices to `SYM_LEGEND_ROWS` in the script.
+- [print/keycap-legends.pdf](print/keycap-legends.pdf) — base legends, the SYM **number** row, and the home-row combos.
+- [print/keycap-legends-symbols.pdf](print/keycap-legends-symbols.pdf) — the same, with the SYM **symbol** rows in the corner as well.
+
+Both cover all 42 keys and have two pages: page 1 filled for waterslide or sticker decals, page 2 outlined for tracing or a paint stencil. Each key shows its base legend, its SYM legend in the top-left corner, and — on `S D F` / `J K L` — the Ctrl/Opt combo marked on the edge facing the key you press it with, plus a bar underneath for the three-key Ctrl+Opt. Print at 100% and check the 50 mm bar before cutting.
 
 ```sh
 uv run scripts/make_keycap_legends.py
