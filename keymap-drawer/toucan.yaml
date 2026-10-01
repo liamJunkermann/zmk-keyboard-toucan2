@@ -219,20 +219,14 @@ layers:
   - Mid Click
 combos:
 - p: [14, 15]
-  k: {t: LCTRL, h: sticky}
-  l: [BASE]
+  k: LCTRL
 - p: [15, 16]
-  k: {t: LALT, h: sticky}
-  l: [BASE]
+  k: LALT
 - p: [14, 15, 16]
-  k: {t: Ctrl+Opt, h: sticky}
-  l: [BASE]
+  k: Ctrl+Opt
 - p: [19, 20]
-  k: {t: RALT, h: sticky}
-  l: [BASE]
+  k: RALT
 - p: [20, 21]
-  k: {t: RCTRL, h: sticky}
-  l: [BASE]
+  k: RCTRL
 - p: [19, 20, 21]
-  k: {t: AltGr+RCTRL, h: sticky}
-  l: [BASE]
+  k: AltGr+RCTRL
