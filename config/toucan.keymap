@@ -8,16 +8,6 @@
 #define SYM  2
 #define ADJ  3
 
-// Home-row modifier combos: tap for a one-shot modifier, hold for a normal one
-#define MOD_COMBO(name, keys, mod) \
-    name { \
-        timeout-ms = <40>; \
-        require-prior-idle-ms = <150>; \
-        key-positions = <keys>; \
-        layers = <BASE>; \
-        bindings = <&sk mod>; \
-    };
-
 &sk {
     release-after-ms = <1500>;
     quick-release;
@@ -36,12 +26,35 @@
     combos {
         compatible = "zmk,combos";
 
-        MOD_COMBO(ctrl_l,     14 15,    LCTRL)       // S+D
-        MOD_COMBO(opt_l,      15 16,    LALT)        // D+F
-        MOD_COMBO(ctrl_opt_l, 14 15 16, LC(LALT))    // S+D+F
-        MOD_COMBO(opt_r,      19 20,    RALT)        // J+K
-        MOD_COMBO(ctrl_r,     20 21,    RCTRL)       // K+L
-        MOD_COMBO(ctrl_opt_r, 19 20 21, RA(RCTRL))   // J+K+L
+        ctrl_l {
+            key-positions = <14 15>; // S + D
+            bindings = <&kp LCTRL>;
+        };
+
+        opt_l {
+            key-positions = <15 16>; // D + F
+            bindings = <&kp LALT>;
+        };
+
+        ctrl_opt_l {
+            key-positions = <14 15 16>; // S + D + F
+            bindings = <&kp LC(LALT)>;
+        };
+
+        opt_r {
+            key-positions = <19 20>; // J + K
+            bindings = <&kp RALT>;
+        };
+
+        ctrl_r {
+            key-positions = <20 21>; // K + L
+            bindings = <&kp RCTRL>;
+        };
+
+        ctrl_opt_r {
+            key-positions = <19 20 21>; // J + K + L
+            bindings = <&kp RA(RCTRL)>;
+        };
     };
 
     keymap {
